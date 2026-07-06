@@ -1,0 +1,432 @@
+@import "tailwindcss";
+
+/* ─────────────────────────────────────────────────────────────
+   SAKURA & STEEL — Design System
+   ───────────────────────────────────────────────────────────── */
+
+/* ── Palette ── */
+:root {
+  --ink: #0B0B0C;
+  --parchment: #EBE4DA;
+  --sakura: #FFB7C5;
+  --crimson: #8B1E3F;
+  --gold: #C9A65C;
+
+  /* Light mode defaults */
+  --bg-primary: #EBE4DA;
+  --bg-secondary: #DFD7CB;
+  --bg-card: rgba(235, 228, 218, 0.7);
+  --text-primary: #0B0B0C;
+  --text-secondary: #3A3A3C;
+  --text-muted: #6B6B6E;
+  --border-color: rgba(11, 11, 12, 0.08);
+  --glass-bg: rgba(235, 228, 218, 0.6);
+  --glass-border: rgba(201, 165, 92, 0.2);
+  --glass-shadow: rgba(11, 11, 12, 0.05);
+  --nav-bg: rgba(247, 241, 232, 0.75);
+
+  --background: var(--bg-primary);
+  --foreground: var(--text-primary);
+}
+
+.dark {
+  --bg-primary: #0B0B0C;
+  --bg-secondary: #141416;
+  --bg-card: rgba(20, 20, 22, 0.7);
+  --text-primary: #F7F1E8;
+  --text-secondary: #C8C2B8;
+  --text-muted: #8A8580;
+  --border-color: rgba(247, 241, 232, 0.08);
+  --glass-bg: rgba(20, 20, 22, 0.6);
+  --glass-border: rgba(201, 165, 92, 0.15);
+  --glass-shadow: rgba(0, 0, 0, 0.3);
+  --nav-bg: rgba(11, 11, 12, 0.8);
+
+  --background: var(--bg-primary);
+  --foreground: var(--text-primary);
+}
+
+/* ── Tailwind v4 theme tokens ── */
+@theme inline {
+  --color-ink: #0B0B0C;
+  --color-parchment: #F7F1E8;
+  --color-sakura: #FFB7C5;
+  --color-crimson: #8B1E3F;
+  --color-gold: #C9A65C;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-sans: "Manrope", system-ui, sans-serif;
+
+  --ease-katana: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-katana-draw: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-brush: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Base ── */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  line-height: 1.7;
+  overflow-x: hidden;
+  transition: background-color 0.5s var(--ease-brush), color 0.3s var(--ease-brush);
+
+  /* Custom cursor */
+  cursor: url('/images/cursor.png') 0 0, auto;
+}
+
+/* Custom cursor for interactive elements */
+a, button, [role="button"], input, textarea, select, [tabindex] {
+  cursor: url('/images/cursor.png') 0 0, pointer;
+}
+
+/* ── Fixed background texture ── */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-color: var(--bg-primary);
+  /* CSS linen/woven texture pattern */
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(180, 160, 130, 0.04) 2px,
+      rgba(180, 160, 130, 0.04) 3px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(180, 160, 130, 0.04) 2px,
+      rgba(180, 160, 130, 0.04) 3px
+    ),
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 4px,
+      rgba(160, 140, 110, 0.02) 4px,
+      rgba(160, 140, 110, 0.02) 5px
+    );
+  background-size: 4px 4px, 4px 4px, 6px 6px;
+  pointer-events: none;
+}
+
+.dark body::after {
+  background-color: var(--bg-primary);
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(200, 190, 170, 0.03) 2px,
+      rgba(200, 190, 170, 0.03) 3px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(200, 190, 170, 0.03) 2px,
+      rgba(200, 190, 170, 0.03) 3px
+    );
+}
+
+/* ── Typography ── */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-serif);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+
+h1 {
+  font-size: clamp(2.5rem, 6vw, 5rem);
+}
+
+h2 {
+  font-size: clamp(1.8rem, 4vw, 3rem);
+}
+
+h3 {
+  font-size: clamp(1.2rem, 2.5vw, 1.5rem);
+}
+
+/* ── Selection ── */
+::selection {
+  background: var(--sakura);
+  color: var(--ink);
+}
+
+/* ── Glassmorphism surfaces ── */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  box-shadow:
+    0 4px 30px var(--glass-shadow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.glass-card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  box-shadow:
+    0 8px 32px var(--glass-shadow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  transition: transform 0.4s var(--ease-katana),
+    box-shadow 0.4s var(--ease-katana),
+    border-color 0.3s ease;
+}
+
+.glass-card:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 16px 48px var(--glass-shadow),
+    0 0 0 1px var(--sakura),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 183, 197, 0.3);
+}
+
+/* ── Hairline dividers (brush-stroke style) ── */
+.hairline {
+  height: 1px;
+  background: linear-gradient(90deg,
+      transparent 0%,
+      var(--gold) 15%,
+      var(--gold) 85%,
+      transparent 100%);
+  opacity: 0.4;
+  border: none;
+}
+
+.hairline-vertical {
+  width: 1px;
+  background: linear-gradient(180deg,
+      transparent 0%,
+      var(--gold) 15%,
+      var(--gold) 85%,
+      transparent 100%);
+  opacity: 0.3;
+}
+
+/* ── Hanko seal (circular stamp) ── */
+.hanko {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 2px solid var(--crimson);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 0.75rem;
+  color: var(--crimson);
+  letter-spacing: -0.5px;
+  transition: all 0.3s var(--ease-katana);
+}
+
+.hanko:hover {
+  background: var(--crimson);
+  color: var(--parchment);
+}
+
+/* ── Washi paper grain overlay ── */
+.washi-grain::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+/* ── Section spacing ── */
+.section-padding {
+  padding: clamp(4rem, 10vh, 8rem) clamp(1.5rem, 5vw, 6rem);
+}
+
+/* ── Custom scrollbar ── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gold);
+  border-radius: 3px;
+  opacity: 0.5;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--sakura);
+}
+
+/* ── Status badge ── */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.status-completed {
+  background: rgba(139, 30, 63, 0.12);
+  color: var(--crimson);
+  border: 1px solid rgba(139, 30, 63, 0.2);
+}
+
+.status-active {
+  background: rgba(255, 183, 197, 0.15);
+  color: var(--sakura);
+  border: 1px solid rgba(255, 183, 197, 0.3);
+}
+
+.dark .status-active {
+  color: var(--sakura);
+}
+
+.status-upcoming {
+  background: rgba(201, 165, 92, 0.12);
+  color: var(--gold);
+  border: 1px solid rgba(201, 165, 92, 0.2);
+}
+
+/* ── Tech tag pills ── */
+.tech-tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  background: var(--border-color);
+  color: var(--text-secondary);
+  transition: all 0.2s ease;
+}
+
+.tech-tag:hover {
+  background: rgba(255, 183, 197, 0.15);
+  color: var(--sakura);
+}
+
+/* ── Focus styles ── */
+:focus-visible {
+  outline: 2px solid var(--sakura);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Smooth link styling ── */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* ── Section heading accent ── */
+.section-heading {
+  position: relative;
+  display: inline-block;
+}
+
+.section-heading::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--sakura), var(--crimson));
+  border-radius: 1px;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Cherry Blossom Petal Styles (CodePen port)
+   ───────────────────────────────────────────────────────────── */
+.petal {
+  background: url('/images/cherry-blossom.png') no-repeat;
+}
+
+.petal.petal-style1 {
+  width: 45px;
+  height: 20px;
+  background-position: -31px 0;
+}
+
+.petal.petal-style2 {
+  width: 42px;
+  height: 22px;
+  background-position: 0 -23px;
+}
+
+.petal.petal-style3 {
+  width: 37px;
+  height: 24px;
+  background-position: 0 -50px;
+}
+
+.petal.petal-style4 {
+  width: 26px;
+  height: 34px;
+  background-position: -49px -35px;
+}
+
+
+
+/* CSS fallback petals (in case the sprite URL fails) */
+.petal-style1,
+.petal-style2,
+.petal-style3,
+.petal-style4 {
+  position: relative;
+}
+
+/* Additional petal visibility on both themes */
+.dark .petal {
+  opacity: 0.7;
+  filter: brightness(1.2);
+}
