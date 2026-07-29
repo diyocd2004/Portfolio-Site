@@ -31,7 +31,7 @@ export default function HeroSection() {
           >
             <span className="inline-block text-sm font-medium tracking-[0.2em] uppercase
               text-sakura mb-4">
-              Security Analyst & AI Practitioner
+              Aspiring Cybersecurity Engineer & AI Practitioner
             </span>
           </motion.div>
 
@@ -89,8 +89,9 @@ export default function HeroSection() {
               </svg>
             </a>
             <a
-              href="/resume/DIYO_CD_Resume.pdf"
-              download
+              href="https://docs.google.com/document/d/1-boHLa56X78CeRSLu_35N9fDeG-uBMbShHY65sUX9aQ/edit?usp=sharing"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 px-8 py-3.5
                 border border-[var(--glass-border)] text-[var(--text-primary)]
                 font-medium rounded-lg hover:border-sakura/50
@@ -99,9 +100,9 @@ export default function HeroSection() {
             >
               {hero.ctaSecondary}
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
-                <polyline points="7 10 12 15 17 10" />
-                <line x1="12" y1="15" x2="12" y2="3" />
+                <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" />
+                <polyline points="15 3 21 3 21 9" />
+                <line x1="10" y1="14" x2="21" y2="3" />
               </svg>
             </a>
           </motion.div>

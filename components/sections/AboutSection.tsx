@@ -82,7 +82,7 @@ export default function AboutSection() {
               className="mt-10 grid grid-cols-2 sm:grid-cols-3 gap-6"
             >
               {[
-                { value: "3+", label: "Internships" },
+                { value: "4+", label: "Internships" },
                 { value: "10+", label: "Vulnerabilities Found" },
                 { value: "5+", label: "Projects Built" },
               ].map((stat, i) => (

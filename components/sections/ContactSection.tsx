@@ -32,54 +32,36 @@ export default function ContactSection() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!formData.name || !formData.email || !formData.message) {
+      setFormStatus("error");
+      setTimeout(() => setFormStatus("idle"), 4000);
+      return;
+    }
+
     setFormStatus("sending");
 
     try {
-      if (
-        !formData.name ||
-        !formData.email ||
-        !formData.message
-      ) {
-        throw new Error("Please fill out all required fields.");
-      }
-
-      // Check for placeholder API key
-      const apiKey = "YOUR_WEB3FORMS_ACCESS_KEY";
-      
-      if (apiKey === "YOUR_WEB3FORMS_ACCESS_KEY") {
-        // Simulate a successful network request for demo purposes
-        await new Promise((resolve) => setTimeout(resolve, 1500));
-        setFormStatus("success");
-        setFormData({ name: "", email: "", subject: "", message: "" });
-        setTimeout(() => setFormStatus("idle"), 4000);
-        return;
-      }
-
-      const response = await fetch("https://api.web3forms.com/submit", {
+      const res = await fetch("/api/contact", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          access_key: apiKey,
-          name: formData.name,
-          email: formData.email,
-          subject: formData.subject || "Portfolio Contact Form",
-          message: formData.message,
-          to: profile.contact.email,
-        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
       });
 
-      const result = await response.json();
-      if (result.success) {
+      if (res.ok) {
         setFormStatus("success");
         setFormData({ name: "", email: "", subject: "", message: "" });
-        setTimeout(() => setFormStatus("idle"), 4000);
+        setTimeout(() => setFormStatus("idle"), 6000);
       } else {
         setFormStatus("error");
-        setTimeout(() => setFormStatus("idle"), 4000);
+        setTimeout(() => setFormStatus("idle"), 5000);
       }
-    } catch {
+    } catch (err) {
+      console.error("Submission error:", err);
       setFormStatus("error");
-      setTimeout(() => setFormStatus("idle"), 4000);
+      setTimeout(() => setFormStatus("idle"), 5000);
     }
   };
 
@@ -218,7 +200,7 @@ export default function ContactSection() {
                     required
                     value={formData.name}
                     onChange={handleInputChange}
-                    placeholder="John Doe"
+                    placeholder="Name"
                     className="w-full px-4 py-3 rounded-lg bg-[var(--bg-secondary)] border border-[var(--border-color)]
                       text-[var(--text-primary)] placeholder:text-[var(--text-muted)]
                       focus:outline-none focus:border-sakura/50 focus:ring-1 focus:ring-sakura/30
@@ -241,7 +223,7 @@ export default function ContactSection() {
                     required
                     value={formData.email}
                     onChange={handleInputChange}
-                    placeholder="john@example.com"
+                    placeholder="Email"
                     className="w-full px-4 py-3 rounded-lg bg-[var(--bg-secondary)] border border-[var(--border-color)]
                       text-[var(--text-primary)] placeholder:text-[var(--text-muted)]
                       focus:outline-none focus:border-sakura/50 focus:ring-1 focus:ring-sakura/30
@@ -264,7 +246,7 @@ export default function ContactSection() {
                   type="text"
                   value={formData.subject}
                   onChange={handleInputChange}
-                  placeholder="Collaboration, Security Audit, etc."
+                  placeholder="Subject"
                   className="w-full px-4 py-3 rounded-lg bg-[var(--bg-secondary)] border border-[var(--border-color)]
                     text-[var(--text-primary)] placeholder:text-[var(--text-muted)]
                     focus:outline-none focus:border-sakura/50 focus:ring-1 focus:ring-sakura/30
@@ -287,7 +269,7 @@ export default function ContactSection() {
                   rows={5}
                   value={formData.message}
                   onChange={handleInputChange}
-                  placeholder="Tell me about your project or just say hello..."
+                  placeholder="Message"
                   className="w-full px-4 py-3 rounded-lg bg-[var(--bg-secondary)] border border-[var(--border-color)]
                     text-[var(--text-primary)] placeholder:text-[var(--text-muted)]
                     focus:outline-none focus:border-sakura/50 focus:ring-1 focus:ring-sakura/30
@@ -295,10 +277,17 @@ export default function ContactSection() {
                 />
               </div>
 
+              {formStatus === "success" && (
+                <div className="p-4 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-sm text-center font-medium">
+                  ✓ Thank you! Your message has been sent directly to Diyo (diyocd2004@gmail.com).
+                </div>
+              )}
+
               {/* Submit */}
               <div className="text-center pt-2">
                 <button
-                  type="submit"
+                  type="button"
+                  onClick={handleSubmit}
                   disabled={formStatus === "sending"}
                   className="inline-flex items-center gap-2 px-10 py-3.5
                     bg-crimson text-parchment font-medium rounded-lg

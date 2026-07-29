@@ -10,6 +10,7 @@ export interface Experience {
   description: string;
   highlights: string[];
   tools?: string[];
+  certificateImage?: string;
 }
 
 export interface Project {
@@ -18,6 +19,7 @@ export interface Project {
   techStack: string[];
   status: "completed" | "active" | "upcoming";
   link?: string;
+  github?: string;
 }
 
 export interface Education {
@@ -80,21 +82,37 @@ const profile: ProfileData = {
     lastName: "C D",
     title: "MSc Artificial Intelligence & Cybersecurity",
     tagline:
-      "Security analyst and AI practitioner building resilient systems at the intersection of intelligent defense and offensive security.",
+      "Aspiring Cybersecurity Engineer & AI Practitioner — exploring the integration of AI into cybersecurity to build resilient, intelligent defense systems at the intersection of offensive security and adaptive threat detection.",
     ctaPrimary: "View My Work",
-    ctaSecondary: "Download Résumé",
+    ctaSecondary: "Download Resume",
   },
 
   about: {
     heading: "About Me",
     paragraphs: [
       "I'm a postgraduate student pursuing my MSc in Artificial Intelligence & Cybersecurity at CHRIST (Deemed to be University), Bengaluru — batch 2025–27. My work lives at the intersection of AI-driven defense systems and hands-on offensive security.",
-      "With experience spanning web application penetration testing, cloud security architecture, and machine learning for threat detection, I bring a dual perspective: I understand how systems break, and how to build intelligent defenses that adapt before they do.",
+      "With experience spanning web application penetration testing, cloud security architecture, and machine learning for threat detection, I bring a dual perspective: I understand how systems break, and how to build intelligent defenses that adapt before they do. I'm actively exploring how AI can be integrated into cybersecurity — from context-aware anomaly detection to automated threat hunting — to create smarter, faster, and more proactive security systems.",
       "When I'm not hunting vulnerabilities or training models, you'll find me competing in hackathons, contributing to research on context-aware anomaly detection, or working on my upcoming book chapter on AI-driven defensive systems.",
     ],
   },
 
   experience: [
+    {
+      role: "Cybersecurity & Ethical Hacking Intern",
+      company: "Next Afield – Solutions and Networks",
+      location: "Remote (Virtual Internship)",
+      period: "Apr – Jul 2026",
+      description:
+        "Comprehensive virtual internship covering multiple domains of information security with hands-on practical labs and cybersecurity projects.",
+      highlights: [
+        "Performed web application security assessments & OWASP Top 10 vulnerability testing using Burp Suite and OWASP ZAP",
+        "Conducted vulnerability assessments and penetration testing in lab environments using Nmap, Wireshark, and Kali Linux",
+        "Gained hands-on exposure to SOC operations, threat detection, incident response, and security monitoring fundamentals",
+        "Produced comprehensive security assessment reports with actionable vulnerability remediation guidance",
+      ],
+      tools: ["Burp Suite", "OWASP ZAP", "Wireshark", "Nmap", "Kali Linux"],
+      certificateImage: "/images/NextAfield Certificate.png",
+    },
     {
       role: "Cyber Security Analyst Intern",
       company: "Tinos Software & Security Solutions LLP",
@@ -108,6 +126,7 @@ const profile: ProfileData = {
         "Produced detailed vulnerability assessment reports with remediation guidance",
       ],
       tools: ["Burp Suite", "OWASP ZAP", "Nikto"],
+      certificateImage: "/images/tinos.jpg",
     },
     {
       role: "Cybersecurity Intern",
@@ -122,6 +141,7 @@ const profile: ProfileData = {
         "Operated exclusively on Kali Linux for all assessment activities",
       ],
       tools: ["Metasploit", "SQLmap", "Gobuster", "Kali Linux"],
+      certificateImage: "/images/Uptoskills.jpg",
     },
     {
       role: "Cloud & Azure Intern",
@@ -136,6 +156,7 @@ const profile: ProfileData = {
         "Implemented cloud security best practices for enterprise environments",
       ],
       tools: ["Azure IAM", "Virtual Networks", "NSGs"],
+      certificateImage: "/images/Microsoft Elevate.png",
     },
   ],
 
@@ -146,17 +167,15 @@ const profile: ProfileData = {
         "End-to-end CNN-based medical audio classifier for respiratory disease detection. Built with TensorFlow/Keras and Librosa for audio feature extraction, deployed on Azure App Services for real-time inference.",
       techStack: ["TensorFlow", "Keras", "Librosa", "Python", "Azure App Services"],
       status: "completed",
-      link: "#",
-      github: "https://github.com/diyocd2004",
+      github: "https://github.com/diyocd2004/RespiraCheck-Intership-Project",
     },
     {
       title: "Yaalnits Mart",
       description:
-        "Full-stack MERN e-commerce application with comprehensive security hardening against OWASP Top 10 vulnerabilities. Implements secure authentication, input validation, and protection against common web attacks.",
-      techStack: ["MongoDB", "Express.js", "React", "Node.js", "OWASP Top 10"],
+        "Full-stack MERN e-commerce application developed as the BCA 3rd Year Final Project. Features secure authentication, input validation, product catalog management, cart system, and order processing with a responsive storefront UI.",
+      techStack: ["MongoDB", "Express.js", "React", "Node.js"],
       status: "completed",
-      link: "#",
-      github: "https://github.com/diyocd2004",
+      github: "https://github.com/diyocd2004/Yaalnits_Mart",
     },
     {
       title: "AWS Secure Static Hosting",
@@ -164,8 +183,7 @@ const profile: ProfileData = {
         "Production-grade secure static website hosting on AWS with S3 bucket-policy hardening and IAM control enforcement. Demonstrates cloud security best practices for static deployments.",
       techStack: ["AWS S3", "IAM", "Bucket Policies", "CloudFront"],
       status: "completed",
-      link: "#",
-      github: "https://github.com/diyocd2004",
+      github: "https://github.com/diyocd2004/AWS-Cloud-Project",
     },
     {
       title: "Context-Aware Anomaly Detection & SIEM Efficiency",
@@ -173,7 +191,6 @@ const profile: ProfileData = {
         "Active research track investigating adaptive threat-hunting methodologies using context-aware anomaly detection to improve SIEM system efficiency and reduce false positive rates.",
       techStack: ["Python", "Machine Learning", "SIEM", "Threat Intelligence"],
       status: "active",
-      link: "#",
     },
     {
       title: "AI-Driven Defensive Systems — Book Chapter",
@@ -181,7 +198,6 @@ const profile: ProfileData = {
         "Upcoming book chapter (lead author) exploring the application of artificial intelligence in building proactive, adaptive defensive security systems within strategic frameworks.",
       techStack: ["Research", "AI/ML", "Cybersecurity", "Academic Publishing"],
       status: "upcoming",
-      link: "#",
     },
   ],
 
@@ -191,7 +207,10 @@ const profile: ProfileData = {
       institution: "CHRIST (Deemed to be University)",
       location: "Bengaluru",
       period: "2025 – 2027",
-      highlights: ["Currently pursuing (Batch 2025–27)"],
+      highlights: [
+        "Currently pursuing (Batch 2025–27)",
+        "1st Year: 67.03%",
+      ],
     },
     {
       degree: "Bachelor of Computer Applications (BCA)",
@@ -199,7 +218,7 @@ const profile: ProfileData = {
       location: "Bengaluru",
       period: "2022 – 2025",
       highlights: [
-        "First Class Distinction — 75.67% aggregate",
+        "First Class — 74.40% aggregate",
         "7.89 SGPA peak (Semester VI)",
         "AI: 87/100",
         "Cyber Security Lab: A++",
@@ -211,14 +230,14 @@ const profile: ProfileData = {
       institution: "St. Joseph's PU College",
       location: "Bengaluru",
       period: "2020 – 2022",
-      highlights: ["494/600 — First Class"],
+      highlights: ["494/600 — 82.33% — First Class"],
     },
     {
       degree: "10th Standard",
       institution: "St. Joseph's Indian High School",
       location: "Bengaluru",
       period: "2020",
-      highlights: ["540/625 — Grade A+"],
+      highlights: ["540/625 — 86.40% — Grade A+"],
     },
   ],
 
@@ -234,8 +253,8 @@ const profile: ProfileData = {
       type: "certification",
     },
     {
-      title: "CompTIA Security+",
-      issuer: "Skillsoft",
+      title: "AWS Academy Graduate — Cloud Foundations",
+      issuer: "Amazon Web Services (AWS)",
       type: "certification",
     },
     {
@@ -265,7 +284,7 @@ const profile: ProfileData = {
     phone: "+91 63619 43528",
     linkedin: "https://linkedin.com/in/diyocd",
     linkedinDisplay: "linkedin.com/in/diyocd",
-    github: "https://github.com/diyocd",
+    github: "https://github.com/diyocd2004",
   },
 
   socialLinks: [
@@ -276,7 +295,7 @@ const profile: ProfileData = {
     },
     {
       label: "GitHub",
-      url: "https://github.com/diyocd",
+      url: "https://github.com/diyocd2004",
       icon: "github",
     },
     {
@@ -289,7 +308,7 @@ const profile: ProfileData = {
   meta: {
     title: "Diyo C D — AI & Cybersecurity Portfolio",
     description:
-      "Portfolio of Diyo C D — MSc AI & Cybersecurity student, certified penetration tester, and security analyst building resilient systems at the intersection of intelligent defense and offensive security.",
+      "Portfolio of Diyo C D — MSc AI & Cybersecurity student, certified penetration tester, and aspiring cybersecurity engineer building resilient systems at the intersection of intelligent defense and offensive security.",
   },
 };
 

@@ -1,12 +1,13 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import profile from "@/content/profile";
 
 export default function ExperienceSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-80px" });
+  const [lightboxImage, setLightboxImage] = useState<string | null>(null);
 
   return (
     <section id="experience" className="section-padding relative" ref={ref}>
@@ -100,13 +101,37 @@ export default function ExperienceSection() {
                     </ul>
 
                     {exp.tools && (
-                      <div className="flex flex-wrap gap-2">
+                      <div className="flex flex-wrap gap-2 mb-4">
                         {exp.tools.map((tool) => (
                           <span key={tool} className="tech-tag">
                             {tool}
                           </span>
                         ))}
                       </div>
+                    )}
+
+                    {/* View Certificate Button */}
+                    {exp.certificateImage && (
+                      <button
+                        onClick={() => setLightboxImage(exp.certificateImage!)}
+                        className="inline-flex items-center gap-2 px-4 py-2 mt-2
+                          text-xs font-medium uppercase tracking-wider
+                          border border-gold/30 rounded-lg
+                          text-gold hover:bg-gold/10 hover:border-gold/50
+                          transition-all duration-300 group"
+                      >
+                        <svg
+                          width="14" height="14" viewBox="0 0 24 24" fill="none"
+                          stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="group-hover:scale-110 transition-transform"
+                        >
+                          <rect x="3" y="3" width="18" height="18" rx="2" />
+                          <circle cx="8.5" cy="8.5" r="1.5" />
+                          <path d="M21 15l-5-5L5 21" />
+                        </svg>
+                        View Certificate
+                      </button>
                     )}
                   </div>
                 </div>
@@ -117,6 +142,49 @@ export default function ExperienceSection() {
       </div>
 
       <div className="hairline max-w-4xl mx-auto mt-20" />
+
+      {/* ─── Certificate Lightbox ─── */}
+      {lightboxImage && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-[9999] flex items-center justify-center
+            bg-black/80 backdrop-blur-sm p-4"
+          onClick={() => setLightboxImage(null)}
+        >
+          <motion.div
+            initial={{ scale: 0.85, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.3, ease: [0.22, 0.61, 0.36, 1] }}
+            className="relative max-w-4xl max-h-[90vh] rounded-2xl overflow-hidden
+              shadow-2xl border border-[var(--glass-border)]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close button */}
+            <button
+              onClick={() => setLightboxImage(null)}
+              className="absolute top-3 right-3 z-10 w-8 h-8 rounded-full
+                bg-black/60 backdrop-blur-sm flex items-center justify-center
+                text-white hover:bg-black/80 transition-colors"
+              aria-label="Close certificate viewer"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+
+            {/* Certificate image */}
+            <img
+              src={lightboxImage}
+              alt="Internship Certificate"
+              className="w-full h-auto max-h-[85vh] object-contain bg-white"
+            />
+          </motion.div>
+        </motion.div>
+      )}
     </section>
   );
 }
