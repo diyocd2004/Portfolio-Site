@@ -301,7 +301,7 @@ export default function ContactSection() {
 
               {formStatus === "success" && (
                 <div className="p-4 rounded-lg bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-sm text-center font-medium">
-                  ✓ Thank you! Your message has been sent directly to Diyo (diyocd2004@gmail.com).
+                  ✓ Thank you! Your message has been sent successfully. I will get back to you soon.
                 </div>
               )}
 

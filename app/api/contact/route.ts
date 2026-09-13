@@ -1,4 +1,7 @@
 import { NextResponse } from "next/server";
+import { Resend } from "resend";
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 // Simple in-memory rate limiting to prevent spam
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
@@ -34,6 +37,14 @@ export async function POST(request: Request) {
       );
     }
 
+    if (!process.env.RESEND_API_KEY) {
+      console.error("RESEND_API_KEY environment variable is not configured.");
+      return NextResponse.json(
+        { success: false, error: "Email configuration missing on server. Please add RESEND_API_KEY to environment variables." },
+        { status: 500 }
+      );
+    }
+
     const body = await request.json();
     const { name, email, subject, message, _honeypot } = body;
 
@@ -60,53 +71,64 @@ export async function POST(request: Request) {
       );
     }
 
-    // Dynamically resolve origin for production (Vercel) and local compatibility
-    const host = request.headers.get("host");
-    const proto = request.headers.get("x-forwarded-proto") || "https";
-    const origin =
-      request.headers.get("origin") ||
-      request.headers.get("referer") ||
-      (host ? `${proto}://${host}` : "https://diyocd.vercel.app");
+    const cleanName = String(name).trim();
+    const cleanEmail = String(email).trim();
+    const cleanSubject = subject
+      ? String(subject).trim()
+      : `Portfolio Message from ${cleanName}`;
+    const cleanMessage = String(message).trim();
 
-    // Forward to FormSubmit with proper Referer & User-Agent headers
-    const formSubmitRes = await fetch("https://formsubmit.co/ajax/diyocd2004@gmail.com", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-        "Referer": origin,
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-      },
-      body: JSON.stringify({
-        name: String(name).trim(),
-        email: String(email).trim(),
-        _subject: subject
-          ? `Portfolio Message: ${String(subject).trim()}`
-          : `New Portfolio Message from ${String(name).trim()}`,
-        message: String(message).trim(),
-        _captcha: "false",
-        _template: "table",
-      }),
+    // Send email using Resend
+    const { data, error } = await resend.emails.send({
+      from: "Portfolio Contact <onboarding@resend.dev>",
+      to: ["diyodominic@gmail.com"],
+      replyTo: cleanEmail,
+      subject: `[Portfolio] ${cleanSubject}`,
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eaeaea; border-radius: 8px;">
+          <h2 style="color: #8b1e3f; border-bottom: 2px solid #f7a8b8; padding-bottom: 8px;">New Message from Portfolio Website</h2>
+          <table style="width: 100%; border-collapse: collapse; margin-top: 15px;">
+            <tr>
+              <td style="padding: 8px 0; font-weight: bold; width: 120px; color: #555;">Name:</td>
+              <td style="padding: 8px 0; color: #111;">${cleanName}</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; font-weight: bold; color: #555;">Email:</td>
+              <td style="padding: 8px 0;"><a href="mailto:${cleanEmail}" style="color: #8b1e3f;">${cleanEmail}</a></td>
+            </tr>
+            <tr>
+              <td style="padding: 8px 0; font-weight: bold; color: #555;">Subject:</td>
+              <td style="padding: 8px 0; color: #111;">${cleanSubject}</td>
+            </tr>
+          </table>
+          <div style="margin-top: 20px; padding: 15px; background: #fdf6f7; border-left: 4px solid #8b1e3f; border-radius: 4px;">
+            <p style="margin: 0; font-weight: bold; color: #555; margin-bottom: 8px;">Message:</p>
+            <p style="margin: 0; white-space: pre-wrap; color: #222; line-height: 1.6;">${cleanMessage}</p>
+          </div>
+          <p style="margin-top: 25px; font-size: 12px; color: #888; text-align: center;">
+            Sent from Diyo C D's AI Security & Cybersecurity Portfolio
+          </p>
+        </div>
+      `,
     });
 
-    const responseData = await formSubmitRes.json();
-
-    if (responseData.success === "true" || formSubmitRes.ok) {
-      return NextResponse.json({
-        success: true,
-        message: "Message sent successfully!",
-      });
-    } else {
-      console.error("FormSubmit rejected request:", responseData);
+    if (error) {
+      console.error("Resend API error:", error);
       return NextResponse.json(
-        { success: false, error: responseData.message || "Email delivery failed" },
+        { success: false, error: error.message || "Failed to send email. Please try again." },
         { status: 500 }
       );
     }
-  } catch (error) {
+
+    return NextResponse.json({
+      success: true,
+      message: "Message sent successfully!",
+      id: data?.id,
+    });
+  } catch (error: any) {
     console.error("Error in contact API route:", error);
     return NextResponse.json(
-      { success: false, error: "Server network error. Please try again." },
+      { success: false, error: error?.message || "Server network error. Please try again." },
       { status: 500 }
     );
   }
