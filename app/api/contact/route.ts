@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+export const dynamic = "force-dynamic";
 
 // Simple in-memory rate limiting to prevent spam
 const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
@@ -37,13 +37,16 @@ export async function POST(request: Request) {
       );
     }
 
-    if (!process.env.RESEND_API_KEY) {
+    const apiKey = process.env.RESEND_API_KEY;
+    if (!apiKey) {
       console.error("RESEND_API_KEY environment variable is not configured.");
       return NextResponse.json(
         { success: false, error: "Email configuration missing on server. Please add RESEND_API_KEY to environment variables." },
         { status: 500 }
       );
     }
+
+    const resend = new Resend(apiKey);
 
     const body = await request.json();
     const { name, email, subject, message, _honeypot } = body;
