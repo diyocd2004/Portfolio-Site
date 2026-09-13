@@ -22,11 +22,11 @@ interface ScatterPetal {
 
 // Floating symbols that orbit around the avatar
 const ORBIT_ITEMS = [
-  { symbol: "🌸", size: 24, orbit: 170, speed: 20, offset: 0 },
-  { symbol: "⛩️", size: 20, orbit: 190, speed: 25, offset: 72 },
-  { symbol: "🗡️", size: 18, orbit: 160, speed: 30, offset: 144 },
-  { symbol: "🔐", size: 16, orbit: 200, speed: 22, offset: 216 },
-  { symbol: "桜", size: 18, orbit: 180, speed: 28, offset: 288 },
+  { symbol: "🌸", size: 20, orbit: 145, speed: 20, offset: 0 },
+  { symbol: "⛩️", size: 18, orbit: 160, speed: 25, offset: 72 },
+  { symbol: "🗡️", size: 16, orbit: 136, speed: 30, offset: 144 },
+  { symbol: "🔐", size: 15, orbit: 168, speed: 22, offset: 216 },
+  { symbol: "桜", size: 16, orbit: 152, speed: 28, offset: 288 },
 ];
 
 
@@ -123,7 +123,7 @@ export default function ProfileImageInteractive() {
           transformStyle: "preserve-3d",
           perspective: 1000,
         }}
-        className="relative w-64 h-64 md:w-80 md:h-80"
+        className="relative w-56 h-56 md:w-72 md:h-72"
       >
         {/* Outer glow ring */}
         <motion.div
@@ -202,7 +202,7 @@ export default function ProfileImageInteractive() {
               top: "50%",
               left: "50%",
               transformOrigin: "left center",
-              transform: `rotate(${angle}deg) translateX(${140}px)`,
+              transform: `rotate(${angle}deg) translateX(${126}px)`,
             }}
             animate={{
               opacity: isHovered ? [0.3, 0.8, 0.3] : 0.2,

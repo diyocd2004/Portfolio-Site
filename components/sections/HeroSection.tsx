@@ -65,6 +65,29 @@ export default function HeroSection() {
             {hero.tagline}
           </motion.p>
 
+          {/* Domain badges */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.45, ease: [0.22, 0.61, 0.36, 1] }}
+            className="flex flex-wrap gap-2 justify-center lg:justify-start mb-8"
+          >
+            {[
+              "Vulnerability Assessment & VAPT",
+              "AI Security & Threat Defense",
+              "Cloud & Infrastructure Hardening",
+            ].map((badge, idx) => (
+              <span
+                key={idx}
+                className="inline-flex items-center px-3.5 py-1 rounded-full text-xs font-medium
+                  bg-sakura/10 border border-sakura/25 text-[var(--text-primary)]
+                  hover:bg-sakura/20 hover:border-sakura/50 transition-all duration-300 shadow-sm"
+              >
+                {badge}
+              </span>
+            ))}
+          </motion.div>
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -115,7 +138,7 @@ export default function HeroSection() {
           transition={{ duration: 1, delay: 0.3, ease: [0.22, 0.61, 0.36, 1] }}
           className="flex-shrink-0"
         >
-          <div className="scale-90 md:scale-95 origin-center">
+          <div className="scale-85 md:scale-90 origin-center">
             <ProfileImageInteractive />
           </div>
         </motion.div>

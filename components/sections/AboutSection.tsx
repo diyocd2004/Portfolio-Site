@@ -79,18 +79,22 @@ export default function AboutSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.7, delay: 0.5, ease: [0.22, 0.61, 0.36, 1] }}
-              className="mt-10 grid grid-cols-2 sm:grid-cols-3 gap-6"
+              className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-4"
             >
               {[
-                { value: "4+", label: "Internships" },
-                { value: "10+", label: "Vulnerabilities Found" },
-                { value: "5+", label: "Projects Built" },
+                { value: "4", label: "Internships" },
+                { value: "4+", label: "Key Projects" },
+                { value: "6+", label: "Honors & Prizes" },
+                { value: "4+", label: "Certifications" },
               ].map((stat, i) => (
-                <div key={i} className="text-center sm:text-left">
-                  <div className="text-3xl font-serif font-bold text-sakura">
+                <div
+                  key={i}
+                  className="glass-card p-4 text-center sm:text-left transition-all duration-300 hover:border-sakura/40 hover:-translate-y-0.5 group"
+                >
+                  <div className="text-2xl sm:text-3xl font-serif font-bold text-sakura group-hover:text-gold transition-colors mb-1">
                     {stat.value}
                   </div>
-                  <div className="text-sm text-[var(--text-muted)] mt-1">
+                  <div className="text-xs text-[var(--text-muted)] font-medium">
                     {stat.label}
                   </div>
                 </div>

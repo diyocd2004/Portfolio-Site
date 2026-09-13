@@ -15,8 +15,10 @@ export default function ContactSection() {
     email: "",
     subject: "",
     message: "",
+    _honeypot: "",
   });
   const [formStatus, setFormStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const copyEmail = () => {
     navigator.clipboard.writeText(profile.contact.email);
@@ -33,13 +35,15 @@ export default function ContactSection() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.name || !formData.email || !formData.message) {
+    if (!formData.name.trim() || !formData.email.trim() || !formData.message.trim()) {
+      setErrorMessage("Please fill in all required fields (Name, Email, and Message).");
       setFormStatus("error");
-      setTimeout(() => setFormStatus("idle"), 4000);
+      setTimeout(() => setFormStatus("idle"), 5000);
       return;
     }
 
     setFormStatus("sending");
+    setErrorMessage("");
 
     try {
       const res = await fetch("/api/contact", {
@@ -50,18 +54,22 @@ export default function ContactSection() {
         body: JSON.stringify(formData),
       });
 
-      if (res.ok) {
+      const data = await res.json().catch(() => ({}));
+
+      if (res.ok && data.success) {
         setFormStatus("success");
-        setFormData({ name: "", email: "", subject: "", message: "" });
-        setTimeout(() => setFormStatus("idle"), 6000);
+        setFormData({ name: "", email: "", subject: "", message: "", _honeypot: "" });
+        setTimeout(() => setFormStatus("idle"), 8000);
       } else {
+        setErrorMessage(data.error || "Failed to send message. Please try emailing directly.");
         setFormStatus("error");
-        setTimeout(() => setFormStatus("idle"), 5000);
+        setTimeout(() => setFormStatus("idle"), 6000);
       }
     } catch (err) {
       console.error("Submission error:", err);
+      setErrorMessage("Network error. Please check your connection or email directly.");
       setFormStatus("error");
-      setTimeout(() => setFormStatus("idle"), 5000);
+      setTimeout(() => setFormStatus("idle"), 6000);
     }
   };
 
@@ -84,8 +92,8 @@ export default function ContactSection() {
             transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 0.61, 0.36, 1] }}
             className="text-[var(--text-secondary)] text-lg mb-12 max-w-lg mx-auto"
           >
-            Interested in collaborating, have a security challenge, or just want to connect?
-            I&apos;d love to hear from you.
+            Interested in collaborating, discussing security assessments, or exploring opportunities?
+            Feel free to send a message.
           </motion.p>
         </div>
 
@@ -97,7 +105,7 @@ export default function ContactSection() {
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, delay: 0.2 }}
             onClick={copyEmail}
-            className="glass-card p-6 text-center group cursor-pointer"
+            className="glass-card p-6 text-center group cursor-pointer hover:border-sakura/40 hover:-translate-y-0.5 transition-all duration-300"
           >
             <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-sakura/10
               flex items-center justify-center group-hover:bg-sakura/20 transition-colors">
@@ -116,27 +124,29 @@ export default function ContactSection() {
             </div>
           </motion.button>
 
-          {/* Phone */}
+          {/* GitHub */}
           <motion.a
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.5, delay: 0.25 }}
-            href={`tel:${profile.contact.phone.replace(/\s/g, "")}`}
-            className="glass-card p-6 text-center group"
+            href={profile.contact.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="glass-card p-6 text-center group hover:border-crimson/40 hover:-translate-y-0.5 transition-all duration-300"
           >
             <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-crimson/10
               flex items-center justify-center group-hover:bg-crimson/20 transition-colors">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
                 stroke="var(--crimson)" strokeWidth="1.5" strokeLinecap="round"
                 strokeLinejoin="round">
-                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
+                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22" />
               </svg>
             </div>
             <div className="text-xs text-[var(--text-muted)] mb-1 uppercase tracking-wider">
-              Phone
+              GitHub
             </div>
             <div className="text-sm text-[var(--text-primary)] font-medium">
-              {profile.contact.phone}
+              {profile.contact.githubDisplay}
             </div>
           </motion.a>
 
@@ -148,7 +158,7 @@ export default function ContactSection() {
             href={profile.contact.linkedin}
             target="_blank"
             rel="noopener noreferrer"
-            className="glass-card p-6 text-center group"
+            className="glass-card p-6 text-center group hover:border-gold/40 hover:-translate-y-0.5 transition-all duration-300"
           >
             <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-gold/10
               flex items-center justify-center group-hover:bg-gold/20 transition-colors">
@@ -184,6 +194,18 @@ export default function ContactSection() {
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-5">
+              {/* Honeypot field (hidden from users, traps bots) */}
+              <input
+                type="text"
+                name="_honeypot"
+                value={formData._honeypot}
+                onChange={handleInputChange}
+                tabIndex={-1}
+                autoComplete="off"
+                className="hidden"
+                aria-hidden="true"
+              />
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 {/* Name */}
                 <div>
@@ -283,17 +305,22 @@ export default function ContactSection() {
                 </div>
               )}
 
+              {formStatus === "error" && (
+                <div className="p-4 rounded-lg bg-crimson/10 border border-crimson/30 text-sakura text-sm text-center font-medium">
+                  ✕ {errorMessage || "Failed to send message. Please check required fields or email directly."}
+                </div>
+              )}
+
               {/* Submit */}
               <div className="text-center pt-2">
                 <button
-                  type="button"
-                  onClick={handleSubmit}
+                  type="submit"
                   disabled={formStatus === "sending"}
                   className="inline-flex items-center gap-2 px-10 py-3.5
                     bg-crimson text-parchment font-medium rounded-lg
                     hover:bg-crimson/90 transition-all duration-300
                     hover:shadow-[0_0_30px_rgba(139,30,63,0.3)]
-                    active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed"
+                    active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
                 >
                   {formStatus === "sending" ? (
                     <>
@@ -310,8 +337,6 @@ export default function ContactSection() {
                       </svg>
                       Message Sent!
                     </>
-                  ) : formStatus === "error" ? (
-                    "Failed — Try Again"
                   ) : (
                     <>
                       Send Message

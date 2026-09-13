@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────
-// content/profile.ts — Single source of truth for all resume data
+// content/profile.ts — Single source of truth for all portfolio data
 // ─────────────────────────────────────────────────────────────
 
 export interface Experience {
@@ -18,6 +18,7 @@ export interface Project {
   description: string;
   techStack: string[];
   status: "completed" | "active" | "upcoming";
+  category?: "ai-ml" | "cyber" | "cloud" | "fullstack";
   link?: string;
   github?: string;
 }
@@ -34,6 +35,9 @@ export interface Certification {
   title: string;
   issuer: string;
   type: "certification" | "achievement";
+  status?: "completed" | "upcoming";
+  badge?: string;
+  event?: string;
 }
 
 export interface SocialLink {
@@ -66,6 +70,7 @@ export interface ProfileData {
     linkedin: string;
     linkedinDisplay: string;
     github: string;
+    githubDisplay: string;
   };
   socialLinks: SocialLink[];
   meta: {
@@ -92,7 +97,7 @@ const profile: ProfileData = {
     paragraphs: [
       "I'm a postgraduate student pursuing my MSc in Artificial Intelligence & Cybersecurity at CHRIST (Deemed to be University), Bengaluru — batch 2025–27. My work lives at the intersection of AI-driven defense systems and hands-on offensive security.",
       "With experience spanning web application penetration testing, cloud security architecture, and machine learning for threat detection, I bring a dual perspective: I understand how systems break, and how to build intelligent defenses that adapt before they do. I'm actively exploring how AI can be integrated into cybersecurity — from context-aware anomaly detection to automated threat hunting — to create smarter, faster, and more proactive security systems.",
-      "When I'm not hunting vulnerabilities or training models, you'll find me competing in hackathons, contributing to research on context-aware anomaly detection, or working on my upcoming book chapter on AI-driven defensive systems.",
+      "When I'm not auditing applications or training deep learning models, you'll find me competing in hackathons and startup pitch competitions (winning 1st place at AIKYAM), experimenting with offensive security tools, and collaborating on intelligent defense systems.",
     ],
   },
 
@@ -122,7 +127,7 @@ const profile: ProfileData = {
         "Conducted web application security assessments and vulnerability research for production environments.",
       highlights: [
         "Performed comprehensive web application security testing using industry-standard tools",
-        "Identified and reported 10+ vulnerabilities across client applications",
+        "Identified and reported security vulnerabilities across client web applications",
         "Produced detailed vulnerability assessment reports with remediation guidance",
       ],
       tools: ["Burp Suite", "OWASP ZAP", "Nikto"],
@@ -162,20 +167,22 @@ const profile: ProfileData = {
 
   projects: [
     {
+      title: "PromptWars",
+      description:
+        "Interactive AI Security challenge platform and research system for testing LLM vulnerabilities, indirect prompt injection vectors, jailbreaking resistance, and model guardrail enforcement.",
+      techStack: ["Python", "NLP", "Adversarial AI", "LLM Security", "FastAPI"],
+      status: "completed",
+      category: "ai-ml",
+      github: "https://github.com/diyocd2004/PromptWars",
+    },
+    {
       title: "RespiraCheck",
       description:
         "End-to-end CNN-based medical audio classifier for respiratory disease detection. Built with TensorFlow/Keras and Librosa for audio feature extraction, deployed on Azure App Services for real-time inference.",
       techStack: ["TensorFlow", "Keras", "Librosa", "Python", "Azure App Services"],
       status: "completed",
+      category: "ai-ml",
       github: "https://github.com/diyocd2004/RespiraCheck-Intership-Project",
-    },
-    {
-      title: "Yaalnits Mart",
-      description:
-        "Full-stack MERN e-commerce application developed as the BCA 3rd Year Final Project. Features secure authentication, input validation, product catalog management, cart system, and order processing with a responsive storefront UI.",
-      techStack: ["MongoDB", "Express.js", "React", "Node.js"],
-      status: "completed",
-      github: "https://github.com/diyocd2004/Yaalnits_Mart",
     },
     {
       title: "AWS Secure Static Hosting",
@@ -183,21 +190,17 @@ const profile: ProfileData = {
         "Production-grade secure static website hosting on AWS with S3 bucket-policy hardening and IAM control enforcement. Demonstrates cloud security best practices for static deployments.",
       techStack: ["AWS S3", "IAM", "Bucket Policies", "CloudFront"],
       status: "completed",
+      category: "cloud",
       github: "https://github.com/diyocd2004/AWS-Cloud-Project",
     },
     {
-      title: "Context-Aware Anomaly Detection & SIEM Efficiency",
+      title: "Yaalnits Mart",
       description:
-        "Active research track investigating adaptive threat-hunting methodologies using context-aware anomaly detection to improve SIEM system efficiency and reduce false positive rates.",
-      techStack: ["Python", "Machine Learning", "SIEM", "Threat Intelligence"],
-      status: "active",
-    },
-    {
-      title: "AI-Driven Defensive Systems — Book Chapter",
-      description:
-        "Upcoming book chapter (lead author) exploring the application of artificial intelligence in building proactive, adaptive defensive security systems within strategic frameworks.",
-      techStack: ["Research", "AI/ML", "Cybersecurity", "Academic Publishing"],
-      status: "upcoming",
+        "Full-stack MERN e-commerce application developed as the BCA 3rd Year Final Project (Grade O — 47/50). Features secure authentication, input validation, product catalog management, cart system, and order processing with a responsive storefront UI.",
+      techStack: ["MongoDB", "Express.js", "React", "Node.js"],
+      status: "completed",
+      category: "fullstack",
+      github: "https://github.com/diyocd2004/Yaalnits_Mart",
     },
   ],
 
@@ -209,7 +212,7 @@ const profile: ProfileData = {
       period: "2025 – 2027",
       highlights: [
         "Currently pursuing (Batch 2025–27)",
-        "1st Year: 67.03%",
+        "Specialization: AI Security, Penetration Testing & Threat Detection",
       ],
     },
     {
@@ -220,8 +223,7 @@ const profile: ProfileData = {
       highlights: [
         "First Class — 74.40% aggregate",
         "7.89 SGPA peak (Semester VI)",
-        "AI: 87/100",
-        "Cyber Security Lab: A++",
+        "AI: 87/100 · Cyber Security Lab: A++",
         "Major Project: 47/50 (Grade O)",
       ],
     },
@@ -246,36 +248,78 @@ const profile: ProfileData = {
       title: "Red Hat System Administration I",
       issuer: "Red Hat",
       type: "certification",
+      status: "completed",
+      badge: "Verified",
     },
     {
       title: "Red Hat System Administration II",
       issuer: "Red Hat",
       type: "certification",
+      status: "completed",
+      badge: "Verified",
     },
     {
       title: "AWS Academy Graduate — Cloud Foundations",
       issuer: "Amazon Web Services (AWS)",
       type: "certification",
+      status: "completed",
+      badge: "Verified",
     },
     {
-      title: "1st Place — Promptathon, Syntaxia 2026",
+      title: "Certified Penetration Tester",
+      issuer: "Cybersecurity Certification",
+      type: "certification",
+      status: "completed",
+      badge: "Certified",
+    },
+    {
+      title: "CompTIA Security+",
+      issuer: "CompTIA",
+      type: "certification",
+      status: "upcoming",
+      badge: "Upcoming / In-Progress",
+    },
+    {
+      title: "1st Prize (Overall Winner) — AIKYAM Startup Pitch",
+      issuer: "Acharya Institute of Engineering",
+      type: "achievement",
+      badge: "1st Prize",
+      event: "AIKYAM 2026",
+    },
+    {
+      title: "2nd Prize (Runner-Up) — AIKYAM Stress Interview",
+      issuer: "Acharya Institute of Engineering",
+      type: "achievement",
+      badge: "2nd Prize",
+      event: "AIKYAM 2026",
+    },
+    {
+      title: "1st Place — Promptathon",
       issuer: "St. Joseph's University",
       type: "achievement",
+      badge: "1st Place",
+      event: "Syntaxia 2026",
     },
     {
-      title: "1st Place — Reel Making, Syntaxia 2026",
+      title: "1st Place — Reel Making",
       issuer: "St. Joseph's University",
       type: "achievement",
+      badge: "1st Place",
+      event: "Syntaxia 2026",
     },
     {
-      title: "1st Place — Photography, Syntaxia 2026",
+      title: "1st Place — Photography",
       issuer: "St. Joseph's University",
       type: "achievement",
+      badge: "1st Place",
+      event: "Syntaxia 2026",
     },
     {
-      title: "3rd Place — Algo Royale, Magnovite 2026",
+      title: "3rd Place — Algo Royale",
       issuer: "Christ Kengeri Campus",
       type: "achievement",
+      badge: "3rd Place",
+      event: "Magnovite 2026",
     },
   ],
 
@@ -285,18 +329,19 @@ const profile: ProfileData = {
     linkedin: "https://linkedin.com/in/diyocd",
     linkedinDisplay: "linkedin.com/in/diyocd",
     github: "https://github.com/diyocd2004",
+    githubDisplay: "github.com/diyocd2004",
   },
 
   socialLinks: [
     {
-      label: "LinkedIn",
-      url: "https://linkedin.com/in/diyocd",
-      icon: "linkedin",
-    },
-    {
       label: "GitHub",
       url: "https://github.com/diyocd2004",
       icon: "github",
+    },
+    {
+      label: "LinkedIn",
+      url: "https://linkedin.com/in/diyocd",
+      icon: "linkedin",
     },
     {
       label: "Email",
