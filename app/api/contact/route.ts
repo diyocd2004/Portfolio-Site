@@ -84,7 +84,7 @@ export async function POST(request: Request) {
     // Send email using Resend
     const { data, error } = await resend.emails.send({
       from: "Portfolio Contact <onboarding@resend.dev>",
-      to: ["diyodominic@gmail.com"],
+      to: ["diyocd2004@gmail.com"],
       replyTo: cleanEmail,
       subject: `[Portfolio] ${cleanSubject}`,
       html: `
